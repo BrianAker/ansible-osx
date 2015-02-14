@@ -25,6 +25,9 @@
         - protobuf
         - splint
         - swig
+        - Caskroom/cask/gpgtools
+        - Caskroom/cask/macpass
+        - pwgen
 
 # This is because not everything will install
     - name: install bison for OSX
