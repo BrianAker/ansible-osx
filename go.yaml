@@ -7,6 +7,8 @@
     - name: install osx build software
       homebrew: name={{ item }} state=present
       with_items:
+        - Caskroom/cask/gpgtools
+        - Caskroom/cask/macpass
         - autoconf
         - autoconf-archive
         - automake
@@ -21,13 +23,16 @@
         - libmemcached
         - libtool
         - mysql
+        - npm
         - pcre
         - protobuf
-        - splint
-        - swig
-        - Caskroom/cask/gpgtools
-        - Caskroom/cask/macpass
         - pwgen
+        - qemu
+        - splint
+        - ssh-copy-id
+        - swig
+        - libyaml
+        - yubico-piv-tool
 
 # This is because not everything will install
     - name: install bison for OSX
@@ -38,4 +43,11 @@
         - bison
         - flex
         - gperf
+
+    - name: install keybase-installer
+      command: npm install -g keybase-installer
+    - name: install keybase
+      command: keybase-installer
+    - name: disable hidden files on network filesystems
+      command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
 
