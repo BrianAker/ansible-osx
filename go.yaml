@@ -4,11 +4,18 @@
   connection: local
 
   tasks:
+    - name: install osx brew cask software
+      homebrew_cask: name={{ item }} state=present
+      with_items:
+        - gpgtools
+        - macpass
+        - homebrew_cask
+        - yubikey-personalization-gui
+        - yubikey-neo-manager
+        - yubikey-piv-manager
     - name: install osx build software
       homebrew: name={{ item }} state=present
       with_items:
-        - Caskroom/cask/gpgtools
-        - Caskroom/cask/macpass
         - autoconf
         - autoconf-archive
         - automake
@@ -33,6 +40,7 @@
         - swig
         - libyaml
         - yubico-piv-tool
+        - yubikey-personalization
 
 # This is because not everything will install
     - name: install bison for OSX
