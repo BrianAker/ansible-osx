@@ -12,7 +12,7 @@
         - automake
         - boost
         - byobu
-	- caskroom/cask/brew-cask
+        - caskroom/cask/brew-cask
         - diffuse
         - gettext
         - gpg-agent
@@ -47,20 +47,20 @@
     - name: install osx brew cask software
       homebrew_cask: name={{ item }} state=present
       with_items:
-	- dropbox
-	- flash
-	- github
-	- google-chrome
-	- google-drive
-	- java
-	- vmware-fusion
+        - dropbox
+        - flash
+        - github
+        - google-chrome
+        - google-drive
+        - java
+        - vmware-fusion
         - gpgtools
         - macpass
         - yubikey-neo-manager
         - yubikey-personalization-gui
         - yubikey-piv-manager
-	- microsoft-lync
-	- microsoft-office
+        - microsoft-lync
+        - microsoft-office
 
     - name: install keybase-installer
       command: npm install -g keybase-installer
