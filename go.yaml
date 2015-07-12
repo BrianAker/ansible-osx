@@ -4,6 +4,9 @@
   connection: local
 
   tasks:
+    - name: update brew
+      homebrew: update_homebrew=yes upgrade_all=yes
+
     - name: install osx build software
       homebrew: name={{ item }} state=present
       with_items:
@@ -12,10 +15,8 @@
         - automake
         - boost
         - byobu
-        - caskroom/cask/brew-cask
         - diffuse
         - gettext
-        - gpg-agent
         - hub 
         - intltool
         - libevent
@@ -34,8 +35,19 @@
         - yubico-piv-tool
         - yubikey-personalization
 
+
+    - name: Install from dupes
+      homebrew_tap: name={{ item }}
+                    state=present
+      with_items:
+        - homebrew/dupes
+        - caskroom/cask
+
+    - name: install brew cask
+      command: brew install brew-cask
+
 # This is because not everything will install
-    - name: install bison for OSX
+    - name: install bison and friends for OSX
       ignore_errors: yes
       homebrew: name={{ item }}
                 state=present
@@ -62,6 +74,8 @@
         - microsoft-lync
         - microsoft-office
 
+    - name: brew linkapps
+      command: brew linkapps
     - name: install keybase-installer
       command: npm install -g keybase-installer
     - name: install keybase
