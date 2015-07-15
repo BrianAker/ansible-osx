@@ -28,6 +28,7 @@
         - protobuf
         - pwgen
         - qemu
+        - shellcheck
         - splint
         - ssh-copy-id
         - swig
