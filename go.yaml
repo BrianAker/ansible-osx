@@ -85,10 +85,12 @@
     - name: disable hidden files on network filesystems
       command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
     - name: install pip
+      sudo: True
       easy_install:
           name: pip
           state: present
     - name: pip installs required python libraries
+      sudo: True
       pip: 
           name: "{{ item }}"
           state: present
