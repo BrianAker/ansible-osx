@@ -84,4 +84,15 @@
       command: keybase-installer
     - name: disable hidden files on network filesystems
       command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
-
+    - name: install pip
+      easy_install:
+          name: pip
+          state: present
+    - name: pip installs required python libraries
+      pip: 
+          name: "{{ item }}"
+          state: present
+      with_items:
+      - virtualenv
+      - setuptools
+      - requests[security]

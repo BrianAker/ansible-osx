@@ -1,6 +1,7 @@
 *swp
 .Python
 .ansible
+aux/ansible
 bin
 include
 lib
