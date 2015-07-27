@@ -1,0 +1,21 @@
+---
+- name: bootstrap
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: check for xcode
+      command: xcode-select --print-path
+      register: xcode_select_result
+      ignore_errors: true
+      changed_when: "xcode_select_result.rc != 0"
+    - name: joke
+      debug:
+          var: xcode_select_result
+    - name: accept xcode license
+      command: xcodebuild -license
+      when: xcode_select_result.changed
+      sudo: true
+    - name: install xcode cli
+      command: xcode-select --install
+      when: xcode_select_result.changed
