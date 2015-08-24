@@ -1,53 +1,12 @@
 ---
 - name: Common Play
-  hosts: localhost
+  hosts: all
   connection: local
 
+  roles:
+  - common
+
   tasks:
-    - name: update brew
-      homebrew: update_homebrew=yes upgrade_all=yes
-
-    - name: install osx build software
-      homebrew: name={{ item }} state=present
-      with_items:
-        - autoconf
-        - autoconf-archive
-        - automake
-        - boost
-        - byobu
-        - diffuse
-        - gettext
-        - hub 
-        - intltool
-        - libevent
-        - libmemcached
-        - libtool
-        - mysql
-        - npm
-        - lldpd
-        - pcre
-        - protobuf
-        - pwgen
-        - qemu
-        - shellcheck
-        - splint
-        - ssh-copy-id
-        - swig
-        - libyaml
-        - yubico-piv-tool
-        - yubikey-personalization
-
-
-    - name: Install from dupes
-      homebrew_tap: name={{ item }}
-                    state=present
-      with_items:
-        - homebrew/dupes
-        - caskroom/cask
-
-    - name: install brew cask
-      command: brew install brew-cask
-
 # This is because not everything will install
     - name: install bison and friends for OSX
       ignore_errors: yes

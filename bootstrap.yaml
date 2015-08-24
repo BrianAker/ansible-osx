@@ -1,6 +1,6 @@
 ---
 - name: bootstrap
-  hosts: localhost
+  hosts: all
   connection: local
 
   tasks:
@@ -8,11 +8,15 @@
       command: xcode-select --print-path
       register: xcode_select_result
       ignore_errors: true
-      changed_when: "xcode_select_result.rc != 0"
+    - name: check to see if xcode has been run
+      command: xcodebuild -checkFirstLaunchStatus
+      register: xcodebuild_launch_result
+      when: xcode_select_result.rc == 0
+      ignore_errors: true
     - name: accept xcode license
       command: xcodebuild -license
-      when: xcode_select_result.changed
+      when: xcodebuild_launch_result.rc != 0
       sudo: true
     - name: install xcode cli
       command: xcode-select --install
-      when: xcode_select_result.changed
+      when: xcodebuild_launch_result.changed
