@@ -1,3 +1,4 @@
+#!/usr/bin/env ansible-playbook
 ---
 - name: Common Play
   hosts: all
@@ -16,24 +17,28 @@
         - bison
         - flex
         - gperf
+        - engine_pkcs11
 
     - name: install osx brew cask software
       homebrew_cask: name={{ item }} state=present
       with_items:
         - dropbox
         - flash
+        - geektool
         - github
         - google-chrome
         - google-drive
-        - java
-        - vmware-fusion
         - gpgtools
+        - java
         - macpass
+        - microsoft-lync
+        - microsoft-office
+        - rcdefaultapp
+        - secrets
+        - vmware-fusion
         - yubikey-neo-manager
         - yubikey-personalization-gui
         - yubikey-piv-manager
-        - microsoft-lync
-        - microsoft-office
 
     - name: brew linkapps
       command: brew linkapps

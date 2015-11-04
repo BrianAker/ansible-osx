@@ -7,6 +7,7 @@ common_buid:
 - boost
 - byobu
 - diffuse
+- engine_pkcs11
 - gettext
 - hub 
 - intltool
@@ -15,7 +16,6 @@ common_buid:
 - libtool
 - mysql
 - npm
-- lldpd
 - pcre
 - protobuf
 - pwgen
