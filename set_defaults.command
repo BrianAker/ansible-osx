@@ -1,12 +1,15 @@
-#!/usr/bin/env bash
+  #!/usr/bin/env bash
 
-# ~/.osx — https://mths.be/osx
+  # ~/.osx — https://mths.be/osx
 
 # Ask for the administrator password upfront
 sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until `.osx` has finished
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
+
+# Added by -Brian
+defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool no 
 
 ###############################################################################
 # General UI/UX                                                               #
@@ -41,7 +44,7 @@ defaults write com.apple.systemuiserver menuExtras -array \
         "/System/Library/CoreServices/Menu Extras/Clock.menu"
 
 # Set highlight color to green
-#defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
+defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
 
 # Set sidebar icon size to medium
 #defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
@@ -49,6 +52,9 @@ defaults write com.apple.systemuiserver menuExtras -array \
 # Always show scrollbars
 #defaults write NSGlobalDomain AppleShowScrollBars -string "Always"
 # Possible values: `WhenScrolling`, `Automatic` and `Always`
+
+# Disable the over-the-top focus ring animation
+defaults write NSGlobalDomain NSUseAnimatedFocusRing -bool false
 
 # Disable smooth scrolling
 # (Uncomment if you’re on an older Mac that messes up the animation)
@@ -58,12 +64,12 @@ defaults write com.apple.systemuiserver menuExtras -array \
 #defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
 
 # Expand save panel by default
-#defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-#defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode2 -bool true
 
 # Expand print panel by default
-#defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
-#defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+defaults write NSGlobalDomain PMPrintingExpandedStateForPrint2 -bool true
 
 # Save to disk (not to iCloud) by default
 # defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
@@ -151,9 +157,9 @@ defaults write com.apple.SoftwareUpdate ScheduleFrequency -int 1
 ###############################################################################
 
 # Trackpad: enable tap to click for this user and for the login screen
-#defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
-#defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
-#defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad Clicking -bool true
+defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
+defaults write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 
 # Trackpad: map bottom right corner to right-click
 #defaults write com.apple.driver.AppleBluetoothMultitouch.trackpad TrackpadCornerSecondaryClick -int 2
@@ -209,19 +215,22 @@ defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
 # Save screenshots to the desktop
-defaults write com.apple.screencapture location -string "${HOME}/Screenshots"
+defaults write com.apple.screencapture location -string "${HOME}/Dropbox/Screenshots"
 
 # Save screenshots in PNG format (other options: BMP, GIF, JPG, PDF, TIFF)
-#defaults write com.apple.screencapture type -string "png"
+defaults write com.apple.screencapture type -string "PDF"
 
 # Disable shadow in screenshots
 #defaults write com.apple.screencapture disable-shadow -bool true
 
 # Enable subpixel font rendering on non-Apple LCDs
-#defaults write NSGlobalDomain AppleFontSmoothing -int 2
+defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
 # Enable HiDPI display modes (requires restart)
 sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
+
+# change the default screen shot file name
+defaults write com.apple.screencapture name "$(hostname -s) - Screen Shot"
 
 ###############################################################################
 # Finder                                                                      #
@@ -237,6 +246,8 @@ sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutio
 # For other paths, use `PfLo` and `file:///full/path/here/`
 #defaults write com.apple.finder NewWindowTarget -string "PfDe"
 #defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/Desktop/"
+defaults write com.apple.finder NewWindowTarget -string "PfLo"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
 
 # Show icons for hard drives, servers, and removable media on the desktop
 defaults write com.apple.finder ShowExternalHardDrivesOnDesktop -bool false
@@ -278,9 +289,9 @@ defaults write NSGlobalDomain com.apple.springing.delay -float 0
 defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
 # Disable disk image verification
-defaults write com.apple.frameworks.diskimages skip-verify -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
-defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
+#defaults write com.apple.frameworks.diskimages skip-verify -bool true
+#defaults write com.apple.frameworks.diskimages skip-verify-locked -bool true
+#defaults write com.apple.frameworks.diskimages skip-verify-remote -bool true
 
 # Automatically open a new Finder window when a volume is mounted
 defaults write com.apple.frameworks.diskimages auto-open-ro-root -bool true
@@ -301,14 +312,14 @@ defaults write com.apple.finder OpenWindowForNewRemovableDisk -bool true
 /usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:arrangeBy grid" ~/Library/Preferences/com.apple.finder.plist
 
 # Increase grid spacing for icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:gridSpacing 100" ~/Library/Preferences/com.apple.finder.plist
 
 # Increase the size of icons on the desktop and in other icon views
-/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
-/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :DesktopViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :FK_StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
+#/usr/libexec/PlistBuddy -c "Set :StandardViewSettings:IconViewSettings:iconSize 80" ~/Library/Preferences/com.apple.finder.plist
 
 # Use list view in all Finder windows by default
 # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
@@ -324,7 +335,10 @@ defaults write com.apple.finder WarnOnEmptyTrash -bool false
 defaults write com.apple.NetworkBrowser BrowseAllInterfaces -bool true
 
 # Enable the MacBook Air SuperDrive on any Mac
-sudo nvram boot-args="mbasd=1"
+# sudo nvram boot-args="mbasd=1"
+
+# Enable the Verbose Startup
+sudo nvram boot-args="-v"
 
 # Show the ~/Library folder
 chflags nohidden ~/Library
@@ -365,7 +379,7 @@ defaults write com.apple.dock show-process-indicators -bool true
 # Wipe all (default) app icons from the Dock
 # This is only really useful when setting up a new Mac, or if you don’t use
 # the Dock to launch apps.
-#defaults write com.apple.dock persistent-apps -array
+defaults write com.apple.dock persistent-apps -array
 
 # Don’t animate opening applications from the Dock
 defaults write com.apple.dock launchanim -bool false
@@ -404,7 +418,7 @@ defaults write com.apple.dock showLaunchpadGestureEnabled -int 0
 #find "${HOME}/Library/Application Support/Dock" -name "*-*.db" -maxdepth 1 -delete
 
 # Add iOS Simulator to Launchpad
-sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/iOS Simulator.app" "/Applications/iOS Simulator.app"
+# sudo ln -sf "/Applications/Xcode.app/Contents/Developer/Applications/iOS Simulator.app" "/Applications/iOS Simulator.app"
 
 # Add a spacer to the left side of the Dock (where the applications are)
 #defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-type="spacer-tile";}'
@@ -440,8 +454,8 @@ defaults write com.apple.dock wvous-br-modifier -int 0
 ###############################################################################
 
 # Privacy: don’t send search queries to Apple
-defaults write com.apple.Safari UniversalSearchEnabled -bool false
-defaults write com.apple.Safari SuppressSearchSuggestions -bool true
+#defaults write com.apple.Safari UniversalSearchEnabled -bool false
+#defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
 defaults write com.apple.Safari CanPromptForPushNotifications -bool false
 
@@ -521,7 +535,7 @@ defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
 # Disable Spotlight indexing for any volume that gets mounted and has not yet
 # been indexed before.
 # Use `sudo mdutil -i off "/Volumes/foo"` to stop indexing any volume.
-sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
+# sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Volumes"
 # Change indexing order and disable some search results
 # Yosemite-specific search results (remove them if your are using OS X 10.9 or older):
 #       MENU_DEFINITION
@@ -530,35 +544,35 @@ sudo defaults write /.Spotlight-V100/VolumeConfiguration Exclusions -array "/Vol
 #       MENU_SPOTLIGHT_SUGGESTIONS (send search queries to Apple)
 #       MENU_WEBSEARCH             (send search queries to Apple)
 #       MENU_OTHER
-defaults write com.apple.spotlight orderedItems -array \
-        '{"enabled" = 1;"name" = "APPLICATIONS";}' \
-        '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
-        '{"enabled" = 1;"name" = "DIRECTORIES";}' \
-        '{"enabled" = 1;"name" = "PDF";}' \
+#defaults write com.apple.spotlight orderedItems -array \
+#        '{"enabled" = 1;"name" = "APPLICATIONS";}' \
+#        '{"enabled" = 1;"name" = "SYSTEM_PREFS";}' \
+#        '{"enabled" = 1;"name" = "DIRECTORIES";}' \
+#        '{"enabled" = 1;"name" = "PDF";}' \
 #        '{"enabled" = 1;"name" = "FONTS";}' \
-        '{"enabled" = 0;"name" = "DOCUMENTS";}' \
-        '{"enabled" = 0;"name" = "MESSAGES";}' \
-        '{"enabled" = 0;"name" = "CONTACT";}' \
-        '{"enabled" = 0;"name" = "EVENT_TODO";}' \
-        '{"enabled" = 0;"name" = "IMAGES";}' \
-        '{"enabled" = 0;"name" = "BOOKMARKS";}' \
-        '{"enabled" = 0;"name" = "MUSIC";}' \
-        '{"enabled" = 0;"name" = "MOVIES";}' \
-        '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
-        '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
-        '{"enabled" = 0;"name" = "SOURCE";}' \
-        '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
-        '{"enabled" = 0;"name" = "MENU_OTHER";}' \
-        '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
-        '{"enabled" = 0;"name" = "MENU_EXPRESSION";}'
+#        '{"enabled" = 0;"name" = "DOCUMENTS";}' \
+#        '{"enabled" = 0;"name" = "MESSAGES";}' \
+#        '{"enabled" = 0;"name" = "CONTACT";}' \
+#        '{"enabled" = 0;"name" = "EVENT_TODO";}' \
+#        '{"enabled" = 0;"name" = "IMAGES";}' \
+#        '{"enabled" = 0;"name" = "BOOKMARKS";}' \
+#        '{"enabled" = 0;"name" = "MUSIC";}' \
+#        '{"enabled" = 0;"name" = "MOVIES";}' \
+#        '{"enabled" = 0;"name" = "PRESENTATIONS";}' \
+#        '{"enabled" = 0;"name" = "SPREADSHEETS";}' \
+#        '{"enabled" = 0;"name" = "SOURCE";}' \
+#        '{"enabled" = 0;"name" = "MENU_DEFINITION";}' \
+#        '{"enabled" = 0;"name" = "MENU_OTHER";}' \
+#        '{"enabled" = 0;"name" = "MENU_CONVERSION";}' \
+#        '{"enabled" = 0;"name" = "MENU_EXPRESSION";}'
 #        '{"enabled" = 0;"name" = "MENU_WEBSEARCH";}' \
 #        '{"enabled" = 0;"name" = "MENU_SPOTLIGHT_SUGGESTIONS";}'
 # Load new settings before rebuilding the index
-killall mds > /dev/null 2>&1
+# killall mds > /dev/null 2>&1
 # Make sure indexing is enabled for the main volume
-sudo mdutil -i on / > /dev/null
+# sudo mdutil -i on / > /dev/null
 # Rebuild the index from scratch
-sudo mdutil -E / > /dev/null
+# sudo mdutil -E / > /dev/null
 
 ###############################################################################
 # Terminal & iTerm 2                                                          #
@@ -666,7 +680,7 @@ defaults write com.apple.addressbook ABShowDebugMenu -bool true
 #defaults write com.apple.dashboard devmode -bool true
 
 # Enable the debug menu in iCal (pre-10.8)
-defaults write com.apple.iCal IncludeDebugMenu -bool true
+# defaults write com.apple.iCal IncludeDebugMenu -bool true
 
 # Use plain text mode for new TextEdit documents
 #defaults write com.apple.TextEdit RichText -int 0
@@ -675,8 +689,8 @@ defaults write com.apple.iCal IncludeDebugMenu -bool true
 #defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
 # Enable the debug menu in Disk Utility
-defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
-defaults write com.apple.DiskUtility advanced-image-options -bool true
+# defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
+# defaults write com.apple.DiskUtility advanced-image-options -bool true
 
 ###############################################################################
 # Mac App Store                                                               #
@@ -710,8 +724,8 @@ defaults write com.apple.appstore ShowDebugMenu -bool true
 #defaults write com.google.Chrome.canary ExtensionInstallSources -array "https://gist.githubusercontent.com/" "http://userscripts.org/*"
 
 # Disable the all too sensitive backswipe on trackpads
-#defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
-#defaults write com.google.Chrome.canary AppleEnableSwipeNavigateWithScrolls -bool false
+defaults write com.google.Chrome AppleEnableSwipeNavigateWithScrolls -bool false
+defaults write com.google.Chrome.canary AppleEnableSwipeNavigateWithScrolls -bool false
 
 # Disable the all too sensitive backswipe on Magic Mouse
 #defaults write com.google.Chrome AppleEnableMouseSwipeNavigateWithScrolls -bool false

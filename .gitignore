@@ -6,3 +6,5 @@ bin
 include
 lib
 pip-selfcheck.json
+public_keys
+roles

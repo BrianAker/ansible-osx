@@ -24,7 +24,8 @@
         - libtool
         - mysql
         - npm
-        - lldpd
+# lldpd seems to be constantly having issues
+#       - lldpd
         - pcre
         - protobuf
         - pwgen
@@ -61,20 +62,21 @@
     - name: install osx brew cask software
       homebrew_cask: name={{ item }} state=present
       with_items:
-        - dropbox
-        - flash
-        - github
-        - google-chrome
-        - google-drive
-        - java
-        - vmware-fusion
-        - gpgtools
-        - macpass
         - yubikey-neo-manager
         - yubikey-personalization-gui
         - yubikey-piv-manager
-        - microsoft-lync
-        - microsoft-office
+#        - dropbox
+#        - flash
+#        - github
+#        - google-chrome
+#        - google-drive
+#        - java
+#        - vmware-fusion
+#        - launchrocket
+#        - gpgtools
+#        - macpass
+#        - microsoft-lync
+#        - microsoft-office
 
     - name: brew linkapps
       command: brew linkapps
@@ -82,8 +84,6 @@
       command: npm install -g keybase-installer
     - name: install keybase
       command: keybase-installer
-    - name: disable hidden files on network filesystems
-      command: defaults write com.apple.desktopservices DSDontWriteNetworkStores true
     - name: install pip
       sudo: True
       easy_install:
@@ -98,3 +98,7 @@
       - virtualenv
       - setuptools
       - requests[security]
+    - name: create local run directory
+      file: >
+        path: /usr/local/var/run
+        state: directory

@@ -142,10 +142,6 @@ public_keys/jenkins: public_keys/$(dirstamp)
 	@$(TOUCH) $@ 
 	@$(CURL) https://github.com/TangentCI.keys >> $@
 
-PREREQ+= files/pkg-pubkey.cert
-files/pkg-pubkey.cert:
-	@$(CURL) -o $@ http://trac.pcbsd.org/export/780f3da562b72643c04b47a59d277102a09abbca/src-sh/pc-extractoverlay/desktop-overlay/usr/local/etc/pkg-pubkey.cert
-
 PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
 
 $(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
