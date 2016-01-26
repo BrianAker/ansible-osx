@@ -4,6 +4,7 @@
 aux/ansible
 bin
 include
+inventory/inventory
 lib
 pip-selfcheck.json
 public_keys

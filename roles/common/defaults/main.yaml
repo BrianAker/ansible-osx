@@ -1,0 +1,29 @@
+---
+common_buid:
+- autoconf
+- autoconf-archive
+- automake
+- checkbashisms
+- boost
+- byobu
+- diffuse
+- engine_pkcs11
+- gettext
+- hub 
+- intltool
+- libevent
+- libmemcached
+- libtool
+- mysql
+- npm
+- pcre
+- protobuf
+- pwgen
+- qemu
+- shellcheck
+- splint
+- ssh-copy-id
+- swig
+- libyaml
+- yubico-piv-tool
+- yubikey-personalization

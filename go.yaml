@@ -1,6 +1,7 @@
+#!/usr/bin/env ansible-playbook
 ---
 - name: Common Play
-  hosts: localhost
+  hosts: all
   connection: local
 
   tasks:
@@ -58,6 +59,7 @@
         - bison
         - flex
         - gperf
+        - engine_pkcs11
 
     - name: install osx brew cask software
       homebrew_cask: name={{ item }} state=present

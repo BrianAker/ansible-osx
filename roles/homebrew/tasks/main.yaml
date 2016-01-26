@@ -1,0 +1,15 @@
+--- # vim:ft=ansible:
+- name: is homebrew installed
+  stat:
+      path: /usr/local/bin/brew
+      follow: true
+  register: brew_stat_result
+
+- name: Install homerew if brew is not found
+  raw: ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go/install)"
+  register: homebrew_result
+  # changed_when: "homebrew_result != 1"
+  failed_when: "homebrew_result.rc != 0 and 'Homebrew is already installed' not in homebrew_result.stderr"
+  # Successful installs return 0. Running when already installed returns 1 and writes
+  # to stderr, but we wish to consider this specific error a success.
+  when: brew_stat_result.stat.exists == False
