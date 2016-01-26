@@ -15,13 +15,6 @@ PKG_UPGRADE=
 PKG_SEARCH_INSTALL= $(PKG_INSTALLER) $(1)
 BASE_INSTALL_PATH= /usr/
 
-ROLE_FILES=
-ROLE_FILES+= $(ROLE_DEFAULTS)
-ROLE_FILES+= $(ROLE_TASKS)
-ROLE_FILES+= $(ROLE_HANDLERS)
-
-ROLES_PATH+= roles/
-
 HOSTNAME:= `hostname`
 HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
@@ -31,68 +24,6 @@ include aux/common.mk
 include aux/pip.mk
 include aux/ansible.mk
 include aux/git.mk
-
-TASK_DIRS:= tasks defaults handlers meta
-SUB_ROLES:= base validate_input_parameters
-
-RAW_ROLES=
-RAW_ROLES+= $(foreach dir,$(TASK_DIRS),$(subst /$(dir),,$(shell find roles -type d -name '$(dir)')))
-RAW_ROLES+= $(foreach dir,$(SUB_ROLES),$(shell find roles -type d -name '$(dir)'))
-ROLES:= $(sort $(RAW_ROLES))
-
-ROLE_VARS:= $(addsuffix /vars/main.yml, $(ROLES))
-ROLE_DEFAULTS:= $(addsuffix /defaults/main.yml, $(ROLES))
-ROLE_TASKS:= $(addsuffix /tasks/main.yml, $(ROLES))
-ROLE_HANDLERS:= $(addsuffix /handlers/main.yml, $(ROLES))
-ROLE_META:= $(addsuffix /meta/main.yml, $(ROLES))
-
-ANSIBLE_GALAXY_ROLES:= 
-ANSIBLE_GALAXY_ROLES_INSTALL := $(addprefix $(ROLES_PATH), $(addsuffix /$(dirstamp),$(ANSIBLE_GALAXY_ROLES)))
-
-MAINTAINERCLEAN+= $(ANSIBLE_GALAXY_ROLES)
-
-ROLEBOOKS+= $(addsuffix /role.yml, $(ROLES))
-PLAYBOOKS+= $(wildcard *.yml) 
-
-JENKINS_SLAVES=
-
-USER_EXISTS:= $(shell id $(CREATE_USER) > /dev/null 2>&1 ; echo $$?)
-
-$(ROLE_VARS): support/vars.yml
-	@if test -f $@; then \
-	  $(TOUCH) $< $@; \
-	  $(GIT_ADD) $@; \
-	else \
-	  $(MKDIR_P) $(@D); \
-	  $(INSTALL) $< $@; \
-	  $(GIT_ADD) $@; \
-	fi
-
-$(ROLE_META): support/meta.yml
-	@if test -f $@; then \
-	  $(TOUCH) $< $@; \
-	  $(GIT_ADD) $@; \
-	else \
-	  $(MKDIR_P) $(@D); \
-	  $(INSTALL) $< $@; \
-	  $(GIT_ADD) $@; \
-	fi
-
-$(ROLE_FILES): support/main.yml
-	@if test -f $@; then \
-	  $(TOUCH) $< $@; \
-	  $(GIT_ADD) $@; \
-	else \
-	  $(MKDIR_P) $(@D); \
-	  $(INSTALL) $< $@; \
-	  $(GIT_ADD) $@; \
-	fi
-
-$(ROLEBOOKS): support/role.yml $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS)
-	@cp $< $@
-	@echo "  roles: [ '$(subst roles/,,$(@D))' ]" >> $@
-
-BUILD+= $(ROLEBOOKS)
 
 DIST_MAKEFILES:=
 
@@ -111,14 +42,8 @@ distclean-am:
 
 .PHONY: maintainer-clean
 maintainer-clean: distclean
-	@rm -rf $(dir $(ANSIBLE_GALAXY_ROLES_INSTALL))
 	@rm -rf $(MAINTAINERCLEAN)
 	@rm -rf $(PIP_DIR)
-
-.PHONY: print_check
-print_check:
-	@echo "$(CHECK)"
-	@echo "$(ROLEBOOKS)"
 
 .PHONY: check
 check: all $(CHECK)
@@ -141,13 +66,6 @@ PREREQ+= public_keys/jenkins
 public_keys/jenkins: public_keys/$(dirstamp)
 	@$(TOUCH) $@ 
 	@$(CURL) https://github.com/TangentCI.keys >> $@
-
-PREREQ+= $(ANSIBLE_GALAXY_ROLES_INSTALL)
-
-$(ANSIBLE_GALAXY_ROLES_INSTALL): $(ANSIBLE_GALAXY)
-	@$(RM) -rf $(subst /$(dirstamp),, $@)
-	@$(ANSIBLE_GALAXY) install -p $(ROLES_PATH)  $(subst $(ROLES_PATH),, $(subst /$(dirstamp),, $@))
-	@$(TOUCH) $@
 
 PREREQ+= roles/$(dirstamp)
 roles/$(dirstamp):
@@ -173,7 +91,7 @@ localhost: all inventory/localhost
 .PHONY: deploy
 deploy: install
 
-all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(ROLE_FILES) $(ROLE_META) $(ROLE_VARS) $(BUILD)
+all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(BUILD)
 
 .DEFAULT_GOAL:= all
 
