@@ -82,6 +82,8 @@
 
     - name: brew linkapps
       command: brew linkapps
+    - name: brew tap homebrew/dupes
+      command: brew tap homebrew/dupes
     - name: install keybase-installer
       command: npm install -g keybase-installer
     - name: install keybase
