@@ -27,6 +27,9 @@ defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool no
 # Disable the sound effects on boot
 sudo nvram SystemAudioVolume=" "
 
+# Provide the Airport tool in path
+sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport
+
 # Disable transparency in the menu bar and elsewhere on Yosemite
 #defaults write com.apple.universalaccess reduceTransparency -bool true
 
@@ -45,6 +48,12 @@ defaults write com.apple.systemuiserver menuExtras -array \
 
 # Set highlight color to green
 defaults write NSGlobalDomain AppleHighlightColor -string "0.764700 0.976500 0.568600"
+
+# Make tab movement global for hot keys
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Select Next Tab" -string "@$\\U2192"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Select Previous Tab" -string "@$\\U2190"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Show Next Tab" -string "@$\\U2192"
+defaults write NSGlobalDomain NSUserKeyEquivalents -dict-add "Show Previous Tab" -string "@$\\U2190"
 
 # Set sidebar icon size to medium
 #defaults write NSGlobalDomain NSTableViewDefaultSizeMode -int 2
@@ -467,7 +476,7 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 defaults write com.apple.Safari ShowFullURLInSmartSearchField -bool true
 
 # Set Safari’s home page to `about:blank` for faster loading
-#defaults write com.apple.Safari HomePage -string "about:blank"
+defaults write com.apple.Safari HomePage -string ""
 
 # Prevent Safari from opening ‘safe’ files automatically after downloading
 #defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
@@ -500,6 +509,10 @@ defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebK
 
 # Add a context menu item for showing the Web Inspector in web views
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# My default Method of navigation
+# defaults write com.apple.safari NSUserKeyEquivalents -dict-add "Show Next Tab" -string "@$\\U2192"
+# defaults write com.apple.safari NSUserKeyEquivalents -dict-add "Show Previous Tab" -string "@$\\U2190"
 
 ###############################################################################
 # Mail                                                                        #
@@ -677,16 +690,16 @@ defaults write com.apple.ActivityMonitor SortDirection -int 0
 defaults write com.apple.addressbook ABShowDebugMenu -bool true
 
 # Enable Dashboard dev mode (allows keeping widgets on the desktop)
-#defaults write com.apple.dashboard devmode -bool true
+# defaults write com.apple.dashboard devmode -bool true
 
 # Enable the debug menu in iCal (pre-10.8)
 # defaults write com.apple.iCal IncludeDebugMenu -bool true
 
 # Use plain text mode for new TextEdit documents
-#defaults write com.apple.TextEdit RichText -int 0
+# defaults write com.apple.TextEdit RichText -int 0
 # Open and save files as UTF-8 in TextEdit
-#defaults write com.apple.TextEdit PlainTextEncoding -int 4
-#defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
+defaults write com.apple.TextEdit PlainTextEncoding -int 4
+defaults write com.apple.TextEdit PlainTextEncodingForWrite -int 4
 
 # Enable the debug menu in Disk Utility
 # defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
@@ -740,11 +753,23 @@ defaults write com.google.Chrome PMPrintingExpandedStateForPrint2 -bool true
 defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool true
 
 ###############################################################################
-# GPGMail 2                                                                   #
+# gpgmail 2                                                                   #
 ###############################################################################
 
 # Disable signing emails by default
 #defaults write ~/Library/Preferences/org.gpgtools.gpgmail SignNewEmailsByDefault -bool false
+#
+# Update automatically
+defaults write org.gpgtools.gpgmail SUAutomaticallyUpdate -bool false
+
+defaults write org.gpgtools.gpgmail CreatePreviewSnippets -bool true
+
+###############################################################################
+# Skype
+###############################################################################
+
+. skype.sh
+
 
 ###############################################################################
 # Opera & Opera Developer                                                     #
@@ -761,7 +786,7 @@ defaults write com.google.Chrome.canary PMPrintingExpandedStateForPrint2 -bool t
 # Start SizeUp at login
 #defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
 
-# Don’t show the preferences window on next start
+# Don't show the preferences window on next start
 #defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
 
 ###############################################################################
