@@ -1,0 +1,16 @@
+#!/usr/bin/env ansible-playbook
+# vim: set filetype=ansible.yaml softtabstop=2 shiftwidth=2 tselect=2 expandtab :
+---
+- name: Install Solarized
+  hosts: all
+  connection: local
+
+- task:
+	- name: Git solar
+    git: repo=https://github.com/tomislav/osx-terminal.app-colors-solarized.git
+
+  - name:
+    file: path=~/.safari/ state=directory mode=0755
+
+  - name: install custom css
+    - copy: src=default.css dest=~/.safari/

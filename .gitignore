@@ -6,6 +6,7 @@ bin
 include
 inventory/inventory
 lib
+osx-terminal.app-colors-solarized
 pip-selfcheck.json
 public_keys
 roles

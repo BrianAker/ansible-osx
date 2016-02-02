@@ -592,7 +592,7 @@ defaults write com.apple.mail DisableInlineAttachmentViewing -bool true
 ###############################################################################
 
 # Only use UTF-8 in Terminal.app
-defaults write com.apple.terminal StringEncodings -array 4
+# defaults write com.apple.terminal StringEncodings -array 4
 
 # Set Voice preferences
 defaults write com.apple.speech.voice.prefs SelectedVoiceName -string "Moira"
