@@ -1,0 +1,15 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install RemoteDesktop defaults
+  hosts: localhost
+  vars:
+    osx_domain: com.apple.RemoteDesktop
+    osx_domain_values:
+      - { key: "doubleClickAction", type: "string", value: "Control" }
+      - { key: "encryptCopy", type: "bool", value: "false" }
+      - { key: "encryptInstall", type: "bool", value: "false" }
+      - { key: "sendTaskNotification", type: "bool", value: "false" }
+      - { key: "serverGroupOpen", type: "bool", value: "false" }
+      - { key: "useEncryptedTunnel", type: "bool", value: "false" }
+      - { key: "useKeychain", type: "bool", value: "false" }
