@@ -10,3 +10,6 @@ osx-terminal.app-colors-solarized
 pip-selfcheck.json
 public_keys
 roles
+*.retry
+fetched
+out

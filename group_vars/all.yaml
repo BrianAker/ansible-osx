@@ -1,0 +1,12 @@
+---
+homebrew_extra:
+  - yubico-piv-tool
+  - yubikey-personalization
+  - qemu
+  - mysql
+  - libmemcached
+  - hub 
+  - boost
+  - npm
+# lldpd seems to be constantly having issues
+#       - lldpd

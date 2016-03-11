@@ -1,0 +1,42 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ansible-playbook
+# vim:ft=yaml
+# 
+---
+- name: install homebrew
+  hosts: localhost
+  connection: local
+  no_log: True
+
+  tasks:
+    - name: Install additional taps
+      homebrew_tap: name={{ item }}
+                    state=present
+      with_items:
+        - caskroom/cask
+
+    - name: install brew cask
+      command: brew install brew-cask
+
+    - name: install osx brew cask software
+      homebrew_cask: name={{ item }} state=present
+      with_items:
+        - yubikey-neo-manager
+        - yubikey-personalization-gui
+        - yubikey-piv-manager
+#        - dropbox
+#        - flash
+#        - github
+#        - google-chrome
+#        - google-drive
+#        - java
+#        - vmware-fusion
+#        - launchrocket
+#        - gpgtools
+#        - macpass
+#        - microsoft-lync
+#        - microsoft-office
+
+#    - name: install keybase-installer
+#      command: npm install -g keybase-installer
+#    - name: install keybase
+#      command: keybase-installer

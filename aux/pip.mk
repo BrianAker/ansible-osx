@@ -1,20 +1,16 @@
 # vim:ft=make
 
-PIP_DIR:= .ansible
-PIP_BIN_DIR:= $(srcdir)/$(PIP_DIR)/bin
+PIP_DIR:= $(HOME)/.python
+PIP_BIN_DIR:= $(PIP_DIR)/bin
 PIP:= $(PIP_BIN_DIR)/pip
 ACTIVATE:= $(PIP_BIN_DIR)/activate
 
 VIRTUALENV= virtualenv
 
-$(PIP_DIR)/$(dirstamp):
-	$(info $(VIRTUALENV) $(PIP_DIR))
+$(PIP):
 	$(VIRTUALENV) $(PIP_DIR)
-	@$(TOUCH) $@
-	$(info virtualenv installed, run the following command to add ansible to your path:)
-	$(info . $(ACTIVATE))
-
-$(PIP): $(PIP_DIR)/$(dirstamp)
+	$(warning . $(ACTIVATE))
+	$(error virtualenv installed, run the above command to add ansible to your path and rerun make)
 
 define pip_install_r
 $(shell . $(PIP_BIN_DIR)/activate && $(PIP_BIN_DIR)/pip install --quiet -r $1)

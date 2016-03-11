@@ -1,0 +1,9 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ansible-playbook
+# vim:ft=yaml
+# 
+---
+- name: install homebrew
+  hosts: localhost
+
+  roles:
+    - homebrew

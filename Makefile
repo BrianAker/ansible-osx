@@ -1,13 +1,11 @@
-# vim:ft=make
-
-.SUFFIXES:
 .SUFFIXES:
 
 BUILD:=
 CHECK:=
 DISTCLEAN:=
 MAINTAINERCLEAN:=
-PREREQ=
+PREREQ:=
+SANITY:=
 
 PKG_INSTALLER=
 PKG_UPDATE=
@@ -20,16 +18,21 @@ HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
 ALL_SCRIPTS:= $(wildcard *.sh) 
 
+TMP_FILES:= fetched
+TMP_DIR= $(TMP_FILES)/$(dirstamp)
+DISTCLEAN+= $(TMP_FILES)
+
+DIST_MAKEFILES:=
+
 include aux/common.mk
 include aux/pip.mk
 include aux/ansible.mk
 include aux/git.mk
 
-DIST_MAKEFILES:=
-
 .PHONY: clean
 clean:
 	@rm -rf $(BUILD)
+	@rm -rf $(TMP_DIR)
 	@find roles | grep role.yml | xargs rm
 
 .PHONY: distclean
@@ -40,6 +43,21 @@ distclean-am:
 	@rm -rf $(PREREQ)
 	@rm -rf $(DISTCLEAN)
 
+SANITY+= /usr/local/bin/pip
+/usr/local/bin/pip:
+	$(warning sudo easy_install pip)
+	$(error rerun make once completing the above action)
+
+SANITY+= /usr/local/bin/virtualenv
+/usr/local/bin/virtualenv:
+	$(warning sudo pip install virtualenv)
+	$(error rerun make once completing the above action)
+
+SANITY+= $(HOME)/.ssh/id_rsa.pub
+$(HOME)/.ssh/id_rsa.pub:
+	ssh-keygen
+	ssh-add -K $@
+
 .PHONY: maintainer-clean
 maintainer-clean: distclean
 	@rm -rf $(MAINTAINERCLEAN)
@@ -48,33 +66,36 @@ maintainer-clean: distclean
 .PHONY: check
 check: all $(CHECK)
 
-PREREQ+= public_keys/$(dirstamp)
-public_keys/$(dirstamp):
+PREREQ+= $(TMP_DIR)
+$(TMP_DIR):
 	@$(MKDIR_P) $(@D)
 	@$(TOUCH) $@
 
-PREREQ+= public_keys/deploy
-public_keys/deploy: public_keys/$(dirstamp)
+PREREQ+= $(TMP_FILES)/deploy
+$(TMP_FILES)/deploy: $(TMP_DIR)
 	@cp ~/.ssh/id_rsa.pub $@
 
-PREREQ+= public_keys/brian
-public_keys/brian: public_keys/$(dirstamp)
-	@$(TOUCH) $@ 
-	curl https://github.com/brianaker.keys >> $@
+PREREQ+= $(TMP_FILES)/brianaker.keys
+$(TMP_FILES)/brianaker.keys: $(TMP_DIR)
+	@$(WGET_KEYS) https://github.com/$(@F)
 
-PREREQ+= public_keys/jenkins
-public_keys/jenkins: public_keys/$(dirstamp)
-	@$(TOUCH) $@ 
-	@$(CURL) https://github.com/TangentCI.keys >> $@
+PREREQ+= $(TMP_FILES)/TangentCI.keys
+$(TMP_FILES)/TangentCI.keys: $(TMP_DIR)
+	@$(WGET_KEYS) https://github.com/$(@F)
 
 PREREQ+= roles/$(dirstamp)
 roles/$(dirstamp):
 	@$(MKDIR_P) $(@D)
 	@$(TOUCH) $@
 
+PREREQ+= /usr/local/bin/brew
+/usr/local/bin/brew:
+	@$(srcdir)/playbooks/install_homebrew
+
 .PHONY: install
 install: all
-	@$(ANSIBLE_PLAYBOOK) go.yml -u deploy
+	@$(srcdir)/playbooks/install_homebrew.yaml*
+	@$(srcdir)/playbooks/homebrew_basics.yaml*
 
 .PHONY: install-ansible-user
 install-ansible-user: inventory/localhost
@@ -91,7 +112,7 @@ localhost: all inventory/localhost
 .PHONY: deploy
 deploy: install
 
-all: $(ANSIBLE_PLAYBOOK) $(PREREQ) $(BUILD)
+all: | $(SANITY) $(PREREQ) $(ANSIBLE_PLAYBOOK) $(BUILD)
 
 .DEFAULT_GOAL:= all
 

@@ -1,0 +1,42 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install safari defaults
+  hosts: localhost
+  vars:
+    osx_domain: com.apple.Safari
+    osx_domain_values:
+      - { key: "SendDoNotTrackHTTPHeader", type: "bool", value: "true" }
+      - { key: "CanPromptForPushNotifications", type: "bool", value: "false" }
+      - { key: "WebKitTabToLinksPreferenceKey", type: "bool", value: "true" }
+      - { key: "ContentPageGroupIdentifier.WebKit2TabsToLinks", type: "bool", value: "true" }
+      - { key: "ShowFullURLInSmartSearchField", type: "bool", value: "true" }
+      - { key: "HomePage", type: "string", value: "" }
+#     - { key: "AutoOpenSafeDownloads", type: "bool", value: "false" }
+#     - { key: "UniversalSearchEnabled", type: "bool", value: "false" }
+#     - { key: "SuppressSearchSuggestions", type: "bool", value: "false" }
+#     - { key: "ShowFavoritesBar", type: "bool", value: "false" }
+#     - { key: "ShowSidebarInTopSites", type: "bool", value: "false" }
+#     - { key: "DebugSnapshotsUpdatePolicy", type: "int", value: "2" }
+#     - { key: "IncludeInternalDebugMenu", type: "bool", value: "true" }
+#     - { key: "WebKitDeveloperExtras", type: "bool", value: "true" }
+#     - { key: "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled", type: "bool", value: "true" }
+      - { key: "ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled", type: "bool", value: "true" }
+#     - { key: "IncludeDevelopMenu", type: "bool", value: "true" }
+#     - { key: "FindOnPageMatchesWordStartsOnly", type: "bool", value: "false" }
+      - { key: "Command1Through9SwitchesTabs", type: "bool", value: "true" }
+      - { key: "AlwaysShowTabBar", type: "bool", value: "true" }
+      - { key: "UserStyleSheetLocationURLString", type: "string", value: "~/.safari/default.css" }
+
+
+  tasks:
+    - template:
+        src: templates/default.css.j2
+        dest: templates/default.css.j2
+        mode: 0644
+    - osx_defaults:
+        domain:  "{{ osx_domain }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:  "{{ osx_domain_values }}"
