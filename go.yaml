@@ -1,0 +1,110 @@
+#!/usr/bin/env ansible-playbook
+---
+- name: Common Play
+  hosts: all
+  connection: local
+
+  tasks:
+    - name: update brew
+      homebrew: update_homebrew=yes upgrade_all=yes
+
+    - name: Install from dupes
+      homebrew_tap: name={{ item }}
+                    state=present
+      with_items:
+        - homebrew/dupes
+        - caskroom/cask
+        - homebrew/fuse
+        - homebrew/completions
+
+    - name: install osx build software
+      homebrew: name={{ item }} state=present
+      with_items:
+        - autoconf
+        - autoconf-archive
+        - automake
+        - boost
+        - byobu
+        - diffuse
+        - gettext
+        - hub 
+        - intltool
+        - libevent
+        - libmemcached
+        - libtool
+        - mysql
+        - npm
+        - osxfuse
+# lldpd seems to be constantly having issues
+#       - lldpd
+        - pcre
+        - protobuf
+        - pwgen
+        - qemu
+        - shellcheck
+        - splint
+        - ssh-copy-id
+        - sshfs
+        - swig
+        - libyaml
+        - yubico-piv-tool
+        - yubikey-personalization
+
+
+    - name: install brew cask
+      command: brew install brew-cask
+
+# This is because not everything will install
+    - name: install bison and friends for OSX
+      ignore_errors: yes
+      homebrew: name={{ item }}
+                state=present
+      with_items:
+        - bison
+        - flex
+        - gperf
+        - engine_pkcs11
+
+    - name: install osx brew cask software
+      homebrew_cask: name={{ item }} state=present
+      with_items:
+        - yubikey-neo-manager
+        - yubikey-personalization-gui
+        - yubikey-piv-manager
+#        - dropbox
+#        - flash
+#        - github
+#        - google-chrome
+#        - google-drive
+#        - java
+#        - vmware-fusion
+#        - launchrocket
+#        - gpgtools
+#        - macpass
+#        - microsoft-lync
+#        - microsoft-office
+
+    - name: brew linkapps
+      command: brew linkapps
+    - name: install keybase-installer
+      command: npm install -g keybase-installer
+    - name: install keybase
+      command: keybase-installer
+    - name: install pip
+      sudo: True
+      easy_install:
+          name: pip
+          state: present
+    - name: pip installs required python libraries
+      sudo: True
+      pip: 
+          name: "{{ item }}"
+          state: present
+      with_items:
+      - virtualenv
+      - setuptools
+      - requests[security]
+    - name: create local run directory
+      file: >
+        path: /usr/local/var/run
+        state: directory
