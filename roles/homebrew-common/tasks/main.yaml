@@ -1,0 +1,45 @@
+---
+- name: update brew
+  homebrew:
+      update_homebrew: yes
+      upgrade_all: yes
+
+- name: Install from dupes
+  homebrew_tap: 
+    name: "{{ item }}"
+    state: present
+  with_items: homebrew_common_taps
+
+
+- name: install osx build software
+  homebrew: 
+      name: "{{ item }}"
+      state: present
+  with_items: homebrew_common_packages
+
+- name: install bison and friends for OSX
+  ignore_errors: yes
+  homebrew: 
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - bison
+    - flex
+    - gperf
+    - engine_pkcs11
+
+- name: install osx brew cask software
+  homebrew_cask:
+    name: "{{ item }}"
+    state: present
+  with_items: homebrew_cask_common
+
+- name: install brew cask
+  homebrew: 
+      name: "{{ item }}"
+      state: present
+  with_items:
+    - brew-cask
+
+- name: brew linkapps
+  command: brew linkapps

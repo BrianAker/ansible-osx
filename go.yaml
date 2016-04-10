@@ -50,20 +50,10 @@
         - yubico-piv-tool
         - yubikey-personalization
 
-
     - name: install brew cask
       command: brew install brew-cask
 
 # This is because not everything will install
-    - name: install bison and friends for OSX
-      ignore_errors: yes
-      homebrew: name={{ item }}
-                state=present
-      with_items:
-        - bison
-        - flex
-        - gperf
-        - engine_pkcs11
 
     - name: install osx brew cask software
       homebrew_cask: name={{ item }} state=present
@@ -104,7 +94,7 @@
       - virtualenv
       - setuptools
       - requests[security]
-    - name: create local run directory
+    - name: create local run directory in case lldpd is installed
       file: >
         path: /usr/local/var/run
         state: directory

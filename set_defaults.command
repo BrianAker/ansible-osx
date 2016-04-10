@@ -236,7 +236,7 @@ defaults write com.apple.screencapture type -string "PDF"
 defaults write NSGlobalDomain AppleFontSmoothing -int 2
 
 # Enable HiDPI display modes (requires restart)
-sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
+# sudo defaults write /Library/Preferences/com.apple.windowserver DisplayResolutionEnabled -bool true
 
 # change the default screen shot file name
 defaults write com.apple.screencapture name "$(hostname -s) - Screen Shot"

@@ -18,7 +18,7 @@ HOST_TYPE:= `hostname | cut -d'-' -f1`
 HOST_UUID:= `hostname | cut -d'-' -f2`
 ALL_SCRIPTS:= $(wildcard *.sh) 
 
-TMP_FILES:= fetched
+TMP_FILES:= tmp
 TMP_DIR= $(TMP_FILES)/$(dirstamp)
 DISTCLEAN+= $(TMP_FILES)
 
@@ -43,6 +43,11 @@ distclean-am:
 	@rm -rf $(PREREQ)
 	@rm -rf $(DISTCLEAN)
 
+PREREQ+= $(TMP_DIR)
+$(TMP_DIR):
+	@$(MKDIR_P) $(@D)
+	@$(TOUCH) $@
+
 SANITY+= /usr/local/bin/pip
 /usr/local/bin/pip:
 	$(warning sudo easy_install pip)
@@ -66,23 +71,6 @@ maintainer-clean: distclean
 .PHONY: check
 check: all $(CHECK)
 
-PREREQ+= $(TMP_DIR)
-$(TMP_DIR):
-	@$(MKDIR_P) $(@D)
-	@$(TOUCH) $@
-
-PREREQ+= $(TMP_FILES)/deploy
-$(TMP_FILES)/deploy: $(TMP_DIR)
-	@cp ~/.ssh/id_rsa.pub $@
-
-PREREQ+= $(TMP_FILES)/brianaker.keys
-$(TMP_FILES)/brianaker.keys: $(TMP_DIR)
-	@$(WGET_KEYS) https://github.com/$(@F)
-
-PREREQ+= $(TMP_FILES)/TangentCI.keys
-$(TMP_FILES)/TangentCI.keys: $(TMP_DIR)
-	@$(WGET_KEYS) https://github.com/$(@F)
-
 PREREQ+= roles/$(dirstamp)
 roles/$(dirstamp):
 	@$(MKDIR_P) $(@D)
@@ -90,7 +78,7 @@ roles/$(dirstamp):
 
 PREREQ+= /usr/local/bin/brew
 /usr/local/bin/brew:
-	@$(srcdir)/playbooks/install_homebrew
+	@$(srcdir)/playbooks/install_homebrew.yaml
 
 .PHONY: install
 install: all

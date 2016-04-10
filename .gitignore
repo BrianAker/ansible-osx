@@ -11,5 +11,5 @@ pip-selfcheck.json
 public_keys
 roles
 *.retry
-fetched
+tmp
 out

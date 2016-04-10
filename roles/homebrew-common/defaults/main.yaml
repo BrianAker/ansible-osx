@@ -1,0 +1,41 @@
+---
+homebrew_common_taps:
+  - caskroom/cask
+  - homebrew/completions
+  - homebrew/dupes
+  - homebrew/fuse
+  - homebrew/services
+
+homebrew_common_packages:
+  - autoconf
+  - autoconf-archive
+  - automake
+  - checkbashisms
+  - boost
+  - byobu
+  - diffuse
+  - engine_pkcs11
+  - gettext
+  - hub 
+  - intltool
+  - libevent
+  - libmemcached
+  - libtool
+  - mysql
+  - npm
+  - pcre
+  - protobuf
+  - pwgen
+  - qemu
+  - shellcheck
+  - splint
+  - ssh-copy-id
+  - swig
+  - libyaml
+  - yubico-piv-tool
+  - yubikey-personalization
+
+homebrew_cask_common:
+  - yubikey-neo-manager
+  - yubikey-personalization-gui
+  - yubikey-piv-manager
