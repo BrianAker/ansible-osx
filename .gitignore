@@ -13,3 +13,4 @@ roles
 *.retry
 tmp
 out
+fetched

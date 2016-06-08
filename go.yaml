@@ -98,3 +98,21 @@
       file: >
         path: /usr/local/var/run
         state: directory
+
+    - name: link utilities to local
+      file: 
+        name: "/usr/local/bin/{{ item.name }}"
+        src: "{{ item.src }}/{{ item.name }}"
+        state: link
+        force: yes
+      with_items:
+        - { src: '/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources', name: 'airport' }
+        - { src: '/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support', name: 'lsregister' }
+    - name: link utilities to local
+      file: 
+        name: "/Applications/{{ item.name }}"
+        src: "{{ item.src }}/{{ item.name }}"
+        state: link
+        force: yes
+      with_items:
+        - { src: '/Applications/Xcode.app/Contents/Developer/Applications', name: 'iOS Simulator.app' }

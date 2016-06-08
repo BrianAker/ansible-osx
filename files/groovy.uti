@@ -1,0 +1,17 @@
+		<dict>
+			<key>UTTypeConformsTo</key>
+			<array>
+				<string>public.plain-text</string>
+			</array>
+			<key>UTTypeDescription</key>
+			<string>Groovy Source File</string>
+			<key>UTTypeIdentifier</key>
+			<string>org.groovy-lang.groovy-source</string>
+			<key>UTTypeTagSpecification</key>
+			<dict>
+				<key>public.filename-extension</key>
+				<array>
+					<string>groovy</string>
+				</array>
+			</dict>
+		</dict>

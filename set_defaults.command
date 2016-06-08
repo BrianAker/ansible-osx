@@ -28,7 +28,8 @@ defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool no
 sudo nvram SystemAudioVolume=" "
 
 # Provide the Airport tool in path
-sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport
+# sudo ln -s /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport /usr/local/bin/airport
+# sudo ln -s /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister /usr/local/bin/lsregister
 
 # Disable transparency in the menu bar and elsewhere on Yosemite
 #defaults write com.apple.universalaccess reduceTransparency -bool true
@@ -782,41 +783,41 @@ defaults write org.gpgtools.gpgmail CreatePreviewSnippets -bool true
 #defaults write com.operasoftware.Opera PMPrintingExpandedStateForPrint2 -boolean true
 #defaults write com.operasoftware.OperaDeveloper PMPrintingExpandedStateForPrint2 -boolean true
 
-###############################################################################
-# SizeUp.app                                                                  #
-###############################################################################
-
-# Start SizeUp at login
-#defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
-
-# Don't show the preferences window on next start
-#defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
-
-###############################################################################
-# Sublime Text                                                                #
-###############################################################################
-
-# Install Sublime Text settings
-#cp -r init/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
-
-###############################################################################
-# Transmission.app                                                            #
-###############################################################################
-
-# Use `~/Documents/Torrents` to store incomplete downloads
-defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
-defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
-
-# Don’t prompt for confirmation before downloading
-defaults write org.m0k.transmission DownloadAsk -bool false
-
-# Trash original torrent files
-defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
-
-# Hide the donate message
-defaults write org.m0k.transmission WarningDonate -bool false
-# Hide the legal disclaimer
-defaults write org.m0k.transmission WarningLegal -bool false
+################################################################################
+## SizeUp.app                                                                  #
+################################################################################
+#
+## Start SizeUp at login
+##defaults write com.irradiatedsoftware.SizeUp StartAtLogin -bool true
+#
+## Don't show the preferences window on next start
+##defaults write com.irradiatedsoftware.SizeUp ShowPrefsOnNextStart -bool false
+#
+################################################################################
+## Sublime Text                                                                #
+################################################################################
+#
+## Install Sublime Text settings
+##cp -r init/Preferences.sublime-settings ~/Library/Application\ Support/Sublime\ Text*/Packages/User/Preferences.sublime-settings 2> /dev/null
+#
+################################################################################
+## Transmission.app                                                            #
+################################################################################
+#
+## Use `~/Documents/Torrents` to store incomplete downloads
+#defaults write org.m0k.transmission UseIncompleteDownloadFolder -bool true
+#defaults write org.m0k.transmission IncompleteDownloadFolder -string "${HOME}/Documents/Torrents"
+#
+## Don’t prompt for confirmation before downloading
+#defaults write org.m0k.transmission DownloadAsk -bool false
+#
+## Trash original torrent files
+#defaults write org.m0k.transmission DeleteOriginalTorrent -bool true
+#
+## Hide the donate message
+#defaults write org.m0k.transmission WarningDonate -bool false
+## Hide the legal disclaimer
+#defaults write org.m0k.transmission WarningLegal -bool false
 
 ###############################################################################
 # Twitter.app                                                                 #
@@ -875,10 +876,10 @@ defaults write com.twitter.twitter-mac HideInBackground -bool true
 # Kill affected applications                                                  #
 ###############################################################################
 
-for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
-        "Dock" "Finder" "Google Chrome" "Google Chrome Canary" "Mail" "Messages" \
-        "Opera" "Safari" "SizeUp" "Spectacle" "SystemUIServer" "Terminal" \
-        "Transmission" "Twitter" "iCal"; do
-        killall "${app}" > /dev/null 2>&1
-done
+#for app in "Activity Monitor" "Address Book" "Calendar" "Contacts" "cfprefsd" \
+#        "Dock" "Finder" "Google Chrome" "Google Chrome Canary" "Mail" "Messages" \
+#        "Opera" "Safari" "SizeUp" "Spectacle" "SystemUIServer" "Terminal" \
+#        "Transmission" "Twitter" "iCal"; do
+#        killall "${app}" > /dev/null 2>&1
+#done
 echo "Done. Note that some of these changes require a logout/restart to take effect."
