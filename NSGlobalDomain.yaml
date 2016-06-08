@@ -1,0 +1,67 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install NSGlobalDomain defaults
+  hosts: localhost
+  tasks:
+    - name: NSGlobalDomain
+      osx_defaults:
+        domain: NSGlobalDomain
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+      # Set highlight color to green
+      - { key: "AppleHighlightColor", type: "string", value: "0.764700 0.976500 0.568600" }
+
+        # Set sidebar icon size to medium
+      - { key: "NSTableViewDefaultSizeMode", type: "int", value: "2" }
+        # Possible values: `WhenScrolling`, `Automatic` and `Always`
+      - { key: "AppleShowScrollBars", type: "string", value: "Always" }
+
+        # Disable the over-the-top focus ring animation
+      - { key: "NSUseAnimatedFocusRing", type: "bool", value: "false" }
+
+        # Disable smooth scrolling
+        # (Uncomment if you’re on an older Mac that messes up the animation)
+      - { key: "NSScrollAnimationEnabled", type: "bool", value: "false" }
+
+        # Increase window resize speed for Cocoa applications
+        #defaults write NSGlobalDomain NSWindowResizeTime -float 0.001
+      - { key: "NSWindowResizeTime", type: "float", value: "0.001" }
+
+        # Expand save panel by default
+      - { key: "NSNavPanelExpandedStateForSaveMode", type: "bool", value: "false" }
+      - { key: "NSNavPanelExpandedStateForSaveMode2", type: "bool", value: "false" }
+
+        # Expand print panel by default
+      - { key: "PMPrintingExpandedStateForPrint", type: "bool", value: "true" }
+      - { key: "PMPrintingExpandedStateForPrint2", type: "bool", value: "true" }
+
+        # Save to disk (not to iCloud) by default
+      #- { key: "NSDocumentSaveNewDocumentsToCloud", type: "bool", value: "false" }
+      - { key: "NSDocumentSaveNewDocumentsToCloud", type: "bool", value: "true" }
+
+        # Display ASCII control characters using caret notation in standard text views
+        # Try e.g. `cd /tmp; unidecode "\x{0000}" > cc.txt; open -e cc.txt`
+      # - { key: "NSTextShowsControlCharacters", type: "bool", value: "true" }
+      - { key: "NSTextShowsControlCharacters", type: "bool", value: "false" }
+
+        # Disable automatic termination of inactive apps
+      - { key: "NSDisableAutomaticTermination", type: "bool", value: "true" }
+
+    - name: NSGlobalDomain
+      osx_defaults:
+        domain: NSGlobalDomain
+        state: present
+        key: NSUserKeyEquivalents
+        type: dict
+        value: { key: "{{ item.key }}", type: "{{ item.type }}", value: "{{ item.value }}" }
+        dict_add: True
+      with_items:
+        # Make tab movement global for hot keys
+      - { key: "Select Next Tab", type: "string", value: "@$\\U2192" }
+      - { key: "Select Next Tab", type: "string", value: "@$\\U2190" }
+      - { key: "Show Next Tab", type: "string", value: "@$\\U2192" }
+      - { key: "Show Previous Tab", type: "string", value: "@$\\U2190" }

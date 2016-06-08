@@ -1,0 +1,55 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install apple defaults
+  hosts: localhost
+
+  tasks:
+  - name: Set Finder settings
+    osx_defaults:
+        domain: com.apple.finder
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+    with_items:
+      - { key: "NewWindowTarget", type: "string", value: "PfLo" }
+      - { key: "NewWindowTargetPath", type: "string", value: "file://{{ ansible_env.HOME }}/" }
+
+      # Show icons for hard drives, servers, and removable media on the desktop
+      - { key: "ShowExternalHardDrivesOnDesktop", type: "bool", value: "false" }
+      - { key: "ShowHardDrivesOnDesktop", type: "bool", value: "false" }
+      - { key: "ShowMountedServersOnDesktop", type: "bool", value: "false" }
+      - { key: "ShowRemovableMediaOnDesktop", type: "bool", value: "false" }
+
+      # Show status bar
+      - { key: "ShowStatusBar", type: "bool", value: "true" }
+
+      # Show path bar
+      - { key: "ShowPathbar", type: "bool", value: "true" }
+
+      # Allow text selection in Quick Look
+      - { key: "QLEnableTextSelection", type: "bool", value: "true" }
+
+      # Display full POSIX path as Finder window title
+      - { key: "_FXShowPosixPathInTitle", type: "bool", value: "true" }
+
+      # When performing a search, search the current folder by default
+      - { key: "FXDefaultSearchScope", type: "string", value: "SCcf" }
+
+      # Disable the warning when changing a file extension
+      - { key: "FXEnableExtensionChangeWarning", type: "bool", value: "false" }
+
+      # Automatically open a new Finder window when a volume is mounted
+      - { key: "OpenWindowForNewRemovableDisk", type: "bool", value: "true" }
+
+      # Use list view in all Finder windows by default
+      # Four-letter codes for the other view modes: `icnv`, `clmv`, `Flwv`
+      - { key: "FXPreferredViewStyle", type: "string", value: "Nlsv" }
+
+      # Disable the warning before emptying the Trash
+      - { key: "WarnOnEmptyTrash", type: "bool", value: "false" }
+
+    notify:
+      - kill Finder
+

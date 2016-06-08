@@ -3,7 +3,7 @@
 ROLEBOOKS=
 PLAYBOOKS=
 
-ANSIBLE_PKJ_URL:= https://gist.githubusercontent.com/BrianAker/e58417dac282131d2e2a/raw/b91fe0547d538e6a7d27042473600e72cb41e7b1/ansible-requirements
+ANSIBLE_PKJ_URL:= https://gist.githubusercontent.com/BrianAker/e58417dac282131d2e2a/raw/cc8ccb13d50cdcc6e1c4c12ae2eb0203bb494b3d/ansible-requirements
 ANSIBLE_PKJ:= $(notdir $(ANSIBLE_PKJ_URL))
 
 ANSIBLE:= $(PIP_BIN_DIR)/ansible

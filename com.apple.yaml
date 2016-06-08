@@ -1,0 +1,43 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install com.apple defaults
+  hosts: localhost
+  tasks:
+    - name: com.apple.LaunchServices
+      osx_defaults:
+        domain: com.apple.LaunchServices
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: "LSQuarantine", type: "bool", value: "false" }
+
+    - name: com.apple.loginwindow
+      osx_defaults:
+        domain: com.apple.loginwindow
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: "PowerButtonSleepsSystem", type: "bool", value: "true" }
+
+    - name: Provide the Airport tool in path
+      file:
+        src: /System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources/airport
+        name: /usr/local/bin/airport
+        state: link
+      become: yes
+
+    - name: Provide the lsregister tool in path
+      file:
+        src: /System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support/lsregister
+        name: /usr/local/bin/lsregister
+        state: link
+      become: yes
+
+    - name: systemsetup -setrestartfreeze on
+      raw: systemsetup -setrestartfreeze on
+      become: yes

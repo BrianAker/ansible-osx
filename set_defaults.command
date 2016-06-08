@@ -9,7 +9,7 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 # Added by -Brian
-defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool no 
+defaults write com.apple.loginwindow PowerButtonSleepsSystem -bool true 
 
 ###############################################################################
 # General UI/UX                                                               #

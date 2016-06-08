@@ -4,12 +4,19 @@
 - name: install RemoteDesktop defaults
   hosts: localhost
   vars:
-    osx_domain: com.apple.RemoteDesktop
-    osx_domain_values:
-      - { key: "doubleClickAction", type: "string", value: "Control" }
-      - { key: "encryptCopy", type: "bool", value: "false" }
-      - { key: "encryptInstall", type: "bool", value: "false" }
-      - { key: "sendTaskNotification", type: "bool", value: "false" }
-      - { key: "serverGroupOpen", type: "bool", value: "false" }
-      - { key: "useEncryptedTunnel", type: "bool", value: "false" }
-      - { key: "useKeychain", type: "bool", value: "false" }
+  tasks:
+    - named: Set Remote Desktop defaults
+      osx_defaults:
+        domain: com.apple.RemoteDesktop
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: "doubleClickAction", type: "string", value: "Control" }
+        - { key: "encryptCopy", type: "bool", value: "false" }
+        - { key: "encryptInstall", type: "bool", value: "false" }
+        - { key: "sendTaskNotification", type: "bool", value: "false" }
+        - { key: "serverGroupOpen", type: "bool", value: "false" }
+        - { key: "useEncryptedTunnel", type: "bool", value: "false" }
+        - { key: "useKeychain", type: "bool", value: "false" }

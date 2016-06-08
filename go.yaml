@@ -6,16 +6,20 @@
 
   tasks:
     - name: update brew
-      homebrew: update_homebrew=yes upgrade_all=yes
+      homebrew: 
+        update_homebrew: yes
+        upgrade_all: yes
 
     - name: Install from dupes
-      homebrew_tap: name={{ item }}
-                    state=present
+      homebrew_tap: 
+        name: "{{ item }}"
+        state: present
       with_items:
         - homebrew/dupes
         - caskroom/cask
         - homebrew/fuse
         - homebrew/completions
+        - homebrew/command-not-found
 
     - name: install osx build software
       homebrew: name={{ item }} state=present
@@ -54,13 +58,12 @@
       command: brew install brew-cask
 
 # This is because not everything will install
-
-    - name: install osx brew cask software
-      homebrew_cask: name={{ item }} state=present
-      with_items:
-        - yubikey-neo-manager
-        - yubikey-personalization-gui
-        - yubikey-piv-manager
+#    - name: install osx brew cask software
+#      homebrew_cask: name={{ item }} state=present
+#      with_items:
+#        - yubikey-neo-manager
+#        - yubikey-personalization-gui
+#        - yubikey-piv-manager
 #        - dropbox
 #        - flash
 #        - github
@@ -76,17 +79,20 @@
 
     - name: brew linkapps
       command: brew linkapps
+
     - name: install keybase-installer
       command: npm install -g keybase-installer
+
     - name: install keybase
       command: keybase-installer
+
     - name: install pip
-      sudo: True
       easy_install:
           name: pip
           state: present
+      become: yes
+
     - name: pip installs required python libraries
-      sudo: True
       pip: 
           name: "{{ item }}"
           state: present
@@ -94,20 +100,24 @@
       - virtualenv
       - setuptools
       - requests[security]
+      become: yes
+
     - name: create local run directory in case lldpd is installed
-      file: >
+      file:
         path: /usr/local/var/run
         state: directory
+      become: yes
 
     - name: link utilities to local
       file: 
-        name: "/usr/local/bin/{{ item.name }}"
+        dest: "/usr/local/bin/{{ item.name }}"
         src: "{{ item.src }}/{{ item.name }}"
         state: link
         force: yes
       with_items:
         - { src: '/System/Library/PrivateFrameworks/Apple80211.framework/Versions/Current/Resources', name: 'airport' }
         - { src: '/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support', name: 'lsregister' }
+
     - name: link utilities to local
       file: 
         name: "/Applications/{{ item.name }}"
@@ -116,3 +126,4 @@
         force: yes
       with_items:
         - { src: '/Applications/Xcode.app/Contents/Developer/Applications', name: 'iOS Simulator.app' }
+      become: yes
