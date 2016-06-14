@@ -1,0 +1,16 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install org.gpgtools
+  hosts: localhost
+  tasks:
+    - name: org.gpgtools.gpgmail
+      osx_defaults:
+        domain: org.gpgtools.gpgmail
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { key: "SUAutomaticallyUpdate", type: "bool", value: "false" }
+        - { key: "CreatePreviewSnippets", type: "bool", value: "true" }

@@ -6,12 +6,12 @@
 
   tasks:
     - name: update brew
-      homebrew: 
+      homebrew:
         update_homebrew: yes
         upgrade_all: yes
 
     - name: Install from dupes
-      homebrew_tap: 
+      homebrew_tap:
         name: "{{ item }}"
         state: present
       with_items:
@@ -32,7 +32,7 @@
         - cdrtools
         - diffuse
         - gettext
-        - hub 
+        - hub
         - intltool
         - libevent
         - libmemcached
@@ -94,7 +94,7 @@
       become: yes
 
     - name: pip installs required python libraries
-      pip: 
+      pip:
           name: "{{ item }}"
           state: present
       with_items:
@@ -110,7 +110,7 @@
       become: yes
 
     - name: link utilities to local
-      file: 
+      file:
         dest: "/usr/local/bin/{{ item.name }}"
         src: "{{ item.src }}/{{ item.name }}"
         state: link
@@ -120,7 +120,7 @@
         - { src: '/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Support', name: 'lsregister' }
 
     - name: link utilities to local
-      file: 
+      file:
         name: "/Applications/{{ item.name }}"
         src: "{{ item.src }}/{{ item.name }}"
         state: link
