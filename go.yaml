@@ -29,6 +29,7 @@
         - automake
         - boost
         - byobu
+        - cdrtools
         - diffuse
         - gettext
         - hub 
