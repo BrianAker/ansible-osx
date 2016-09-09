@@ -32,8 +32,8 @@
       - { key: "NSWindowResizeTime", type: "float", value: "0.001" }
 
         # Expand save panel by default
-      - { key: "NSNavPanelExpandedStateForSaveMode", type: "bool", value: "false" }
-      - { key: "NSNavPanelExpandedStateForSaveMode2", type: "bool", value: "false" }
+      - { key: "NSNavPanelExpandedStateForSaveMode", type: "bool", value: "true" }
+      - { key: "NSNavPanelExpandedStateForSaveMode2", type: "bool", value: "true" }
 
         # Expand print panel by default
       - { key: "PMPrintingExpandedStateForPrint", type: "bool", value: "true" }
@@ -65,3 +65,13 @@
       - { key: "Select Next Tab", type: "string", value: "@$\\U2190" }
       - { key: "Show Next Tab", type: "string", value: "@$\\U2192" }
       - { key: "Show Previous Tab", type: "string", value: "@$\\U2190" }
+
+    - name: Other Global settings
+      osx_defaults:
+        domain:  "{{ osx_domain }}"
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+        - { osx_domain: "com.apple.NetworkBrowser", key: "BrowseAllInterfaces", type: "int", value: "1" }
+        - { osx_domain: "com.apple.desktopservices", key: "DSDontWriteNetworkStores", type: "bool", value: "true" }

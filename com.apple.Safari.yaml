@@ -14,33 +14,45 @@
         value: "{{ item.value }}"
       with_items:
       - { key: "AlwaysShowTabBar", type: "bool", value: "true" }
+      - { key: "AutoFillCreditCardData", type: "bool", value: "true" }
+      - { key: "AutoFillFromAddressBook", type: "bool", value: "true" }
+      - { key: "AutoFillMiscellaneousForms", type: "bool", value: "true" }
+      - { key: "AutoFillPasswords", type: "bool", value: "true" }
       - { key: "CanPromptForPushNotifications", type: "bool", value: "false" }
-      - { key: "Command1Through9SwitchesTabs", type: "bool", value: "true" }
+      - { key: "Command1Through9SwitchesTabs", type: "bool", value: "false" }
       - { key: "ContentPageGroupIdentifier.WebKit2BackspaceKeyNavigationEnabled", type: "bool", value: "true" }
+      - { key: "ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled", type: "bool", value: "true" }
       - { key: "ContentPageGroupIdentifier.WebKit2TabsToLinks", type: "bool", value: "true" }
+      - { key: "ContentPageGroupIdentifier.WebKitDeveloperExtrasEnabledPreferenceKey", type: "bool", value: "true" }
+      - { key: "FindOnPageMatchesWordStartsOnly", type: "bool", value: "true" }
       - { key: "HomePage", type: "string", value: "" }
       - { key: "IncludeDevelopMenu", type: "bool", value: "true" }
+      - { key: "NewTabBehavior", type: "int", value: "1" }
+      - { key: "NewWindowBehavior", type: "int", value: "1" }
       - { key: "SendDoNotTrackHTTPHeader", type: "bool", value: "true" }
       - { key: "ShowFavoritesBar", type: "bool", value: "true" }
       - { key: "ShowFullURLInSmartSearchField", type: "bool", value: "true" }
+      - { key: "ShowOverlayStatusBar", type: "bool", value: "true" }
+      - { key: "ShowSidebarInNewWindows", type: "bool", value: "true" }
       - { key: "ShowSidebarInTopSites", type: "bool", value: "false" }
-      - { key: "SuppressSearchSuggestions", type: "bool", value: "true" }
+      - { key: "ShowStatusBar", type: "bool", value: "true" }
+      - { key: "SuppressSearchSuggestions", type: "bool", value: "false" }
       - { key: "UniversalSearchEnabled", type: "bool", value: "true" }
       - { key: "UserStyleSheetLocationURLString", type: "string", value: "~/.safari/default.css" }
       - { key: "WebKitDeveloperExtras", type: "bool", value: "true" }
       - { key: "WebKitTabToLinksPreferenceKey", type: "bool", value: "true" }
 #     - { key: "AutoOpenSafeDownloads", type: "bool", value: "false" }
 #     - { key: "DebugSnapshotsUpdatePolicy", type: "int", value: "2" }
-#     - { key: "FindOnPageMatchesWordStartsOnly", type: "bool", value: "false" }
 #     - { key: "IncludeInternalDebugMenu", type: "bool", value: "true" }
-#     - { key: "com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled", type: "bool", value: "true" }
 
-    - template:
+    - name: Add default css for Safari
+      template:
         src: templates/default.css.j2
         dest: templates/default.css.j2
         mode: 0644
 
-    - osx_defaults:
+    - name: Other settings related to Safari
+      osx_defaults:
         domain:  "{{ osx_domain }}"
         key: "{{ item.key }}"
         type: "{{ item.type }}"
