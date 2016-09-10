@@ -33,7 +33,7 @@
       - { key: "ShowFavoritesBar", type: "bool", value: "true" }
       - { key: "ShowFullURLInSmartSearchField", type: "bool", value: "true" }
       - { key: "ShowOverlayStatusBar", type: "bool", value: "true" }
-      - { key: "ShowSidebarInNewWindows", type: "bool", value: "true" }
+      - { key: "ShowSidebarInNewWindows", type: "bool", value: "false" }
       - { key: "ShowSidebarInTopSites", type: "bool", value: "false" }
       - { key: "ShowStatusBar", type: "bool", value: "true" }
       - { key: "SuppressSearchSuggestions", type: "bool", value: "false" }
