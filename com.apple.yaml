@@ -23,6 +23,7 @@
         value: "{{ item.value }}"
       with_items:
         - { key: "PowerButtonSleepsSystem", type: "bool", value: "true" }
+        - { key: "GuestEnabled", type: "bool", value: "false" }
 
     - name: Provide the Airport tool in path
       file:

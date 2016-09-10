@@ -14,3 +14,5 @@ roles
 tmp
 out
 fetched
+.ansible-test
+.DS_Store

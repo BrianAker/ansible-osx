@@ -82,10 +82,15 @@
       command: brew linkapps
 
     - name: install keybase-installer
-      command: npm install -g keybase-installer
-
-    - name: install keybase
-      command: keybase-installer
+      npm: 
+        name: "{{ item }}"
+        global: yes
+        state: present
+      with_items:
+        - jslint
+        - jsonlint
+        - keybase-installer
+        - vimlint
 
     - name: install pip
       easy_install:
@@ -107,7 +112,6 @@
       file:
         path: /usr/local/var/run
         state: directory
-      become: yes
 
     - name: link utilities to local
       file:
