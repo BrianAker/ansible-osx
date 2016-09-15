@@ -1,0 +1,19 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install iTunes defaults
+  hosts: localhost
+  vars:
+  tasks:
+    - name: com.apple.iTunes
+      osx_defaults:
+        domain: com.apple.iTunes
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+      - { key: "disableArtistConnect", type: "bool", value: "true" }
+      - { key: "disableAppleMusic", type: "bool", value: "true" }
+      - { key: "disablePodcasts", type: "bool", value: "true" }
+      - { key: "disableRadio", type: "bool", value: "true" }

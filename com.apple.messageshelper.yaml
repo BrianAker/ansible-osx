@@ -1,0 +1,10 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install message defaults
+  hosts: localhost
+  vars:
+  tasks:
+    - name: com.apple.messageshelper.MessageController
+      raw: defaults write com.apple.messageshelper.MessageController SOInputLineSettings -dict-add "automaticEmojiSubstitutionEnablediMessage" -bool false
+
