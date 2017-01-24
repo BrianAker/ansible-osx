@@ -57,6 +57,17 @@
 
     - name: install brew cask
       command: brew install brew-cask
+      tags:
+          - skip_ansible_lint
+
+    - name: install osx brew cask software
+      homebrew_cask: name={{ item }} state=present
+      with_items:
+        - apm-bash-completion
+        - brew-cask-completion
+        - launchctl-completion
+        - open-completion
+        - pip-completion
 
 # This is because not everything will install
 #    - name: install osx brew cask software
@@ -80,12 +91,18 @@
 
     - name: brew linkapps
       command: brew linkapps
+      tags:
+          - skip_ansible_lint
 
     - name: install keybase-installer
       command: npm install -g keybase-installer
+      tags:
+          - skip_ansible_lint
 
     - name: install keybase
       command: keybase-installer
+      tags:
+          - skip_ansible_lint
 
     - name: install pip
       easy_install:
