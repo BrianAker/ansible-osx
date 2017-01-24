@@ -1,0 +1,41 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: Insert my personal .gitconfig
+  hosts: localhost
+  tasks:
+    - name: Alias ci to commit
+      git_config:
+          name: alias.ci
+          scope: global
+          value: commit
+    - name: Alias ci to commit
+      git_config:
+          name: alias.ci
+          scope: global
+          value: commit
+    - name: Make vim default editor
+      git_config:
+          name: core.editor
+          scope: global
+          value: vim
+    - name: Color UI
+      git_config:
+        name: color.ui
+        value: auto
+        scope: global
+    - name: Set email
+      git_config:
+        name: user.email
+        value: brian@tangent.org
+        scope: global
+    - name: Set name
+      git_config:
+        name: user.name
+        value: brian@tangent.org
+        scope: global
+    - name: Set push default
+      git_config:
+        name: push.default
+        value: simple
+        scope: global

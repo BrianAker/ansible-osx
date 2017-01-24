@@ -1,0 +1,22 @@
+#!/usr/bin/env ANSIBLE_HOSTS="localhost," ANSIBLE_CONNECTION=local ansible-playbook
+# vim:ft=yaml
+---
+- name: install Terminal defaults
+  hosts: localhost
+  vars:
+  tasks:
+    - name: com.apple.Terminal
+      osx_defaults:
+        domain: com.apple.Terminal
+        state: present
+        key: "{{ item.key }}"
+        type: "{{ item.type }}"
+        value: "{{ item.value }}"
+      with_items:
+      - { key: "CopyAttributesProfile", type: "string", value: "com.apple.Terminal.no-attributes" }
+      - { key: "NSNavLastRootDirectory", type: "string", value: "/Volumes/Storage/Users/brian/Downloads/solarized/osx-terminal.app-colors-solarized/xterm-256color" }
+      - { key: "NewTabWorkingDirectoryBehavior", type: "int", value: "1" }
+      - { key: "SecureKeyboardEntry", type: "int", value: "1" }
+      - { key: "Shell", type: "string", value: "env SHELL=/usr/local/bin/bash /usr/local/bin/bash" }
+      - { key: "Default Window Settings", type: "string", value: "Solarized Dark ansi" }
+      - { key: "Startup Window Settings", type: "string", value: "Solarized Dark ansi" }
