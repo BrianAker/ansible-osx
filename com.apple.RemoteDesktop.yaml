@@ -5,7 +5,7 @@
   hosts: localhost
   vars:
   tasks:
-    - named: Set Remote Desktop defaults
+    - name: Set Remote Desktop defaults
       osx_defaults:
         domain: com.apple.RemoteDesktop
         state: present

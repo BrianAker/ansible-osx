@@ -5,21 +5,21 @@
       upgrade_all: yes
 
 - name: Install from dupes
-  homebrew_tap: 
+  homebrew_tap:
     name: "{{ item }}"
     state: present
-  with_items: homebrew_common_taps
+  with_items: "{{ homebrew_common_taps }}"
 
 
 - name: install osx build software
-  homebrew: 
+  homebrew:
       name: "{{ item }}"
       state: present
-  with_items: homebrew_common_packages
+  with_items: "{{ homebrew_common_packages }}"
 
 - name: install bison and friends for OSX
   ignore_errors: yes
-  homebrew: 
+  homebrew:
     name: "{{ item }}"
     state: present
   with_items:
@@ -32,10 +32,10 @@
   homebrew_cask:
     name: "{{ item }}"
     state: present
-  with_items: homebrew_cask_common
+  with_items: "{{ homebrew_cask_common }}"
 
 - name: install brew cask
-  homebrew: 
+  homebrew:
       name: "{{ item }}"
       state: present
   with_items:
