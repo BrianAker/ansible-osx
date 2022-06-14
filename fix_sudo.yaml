@@ -1,0 +1,16 @@
+#!/usr/bin/env -v -S ansible-playbook
+# Need to be listed last
+# vim: set filetype=ansible:
+---
+  - name: Running against localhost
+    gather_facts: no
+    hosts: localhost
+    connection: local 
+
+    tasks:
+    - name: Add priv to pam.d sudo file
+      ansible.builtin.lineinfile:
+        path: /etc/pam.d/sudo
+        insertafter: '# sudo'
+        line: 'auth sufficient pam_tid.so'
+      become: yes
